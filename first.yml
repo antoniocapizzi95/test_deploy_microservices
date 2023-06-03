@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: first-micro-service
+spec:
+  selector:
+    app: first-micro
+  ports:
+    - protocol: 'TCP'
+      port: 8080
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-micro
+spec:
+  selector:
+    matchLabels:
+      app: first-micro
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: first-micro
+    spec:
+      containers:
+        - name: first-micro
+          image: first
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
